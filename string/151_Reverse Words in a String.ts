@@ -4,5 +4,5 @@ function reverseWords(s: string): string {
         .split(' ')
         .filter(item => item && item != ' ')
         .map((item, index, arr) => arr[arr.length - 1 - index])
-        .join(' ');
+        .join(' ')
 };
