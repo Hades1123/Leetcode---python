@@ -1,6 +1,6 @@
 from typing import List
 
-# time = O(n) - space = O(n)
+#! time = O(n) - space = O(n)
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         prefix = [0] * len(nums)
@@ -15,3 +15,18 @@ class Solution:
             current_product *= nums[i]
         result.append(current_product)
         return result
+    
+
+#! time = O(n) - space = O(1)
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        prefix = [0] * len(nums)
+        prefix[-1] = nums[-1]
+        for i in range(1, len(nums) - 1):
+            prefix[-1 - i] = prefix[-i] * nums[-1 - i]
+        current_product = 1
+        for i in range(0, len(nums) - 1):
+            prefix[i] = current_product * prefix[i + 1]
+            current_product *= nums[i]
+        prefix[-1] = current_product
+        return prefix
