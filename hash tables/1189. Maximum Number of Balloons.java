@@ -4,12 +4,18 @@ class Solution {
     public int maxNumberOfBalloons(String text) {
         int[] map = new int[123];
         for (char ch : text.toCharArray()) {
-            map[ch - 'a'] += 1;
+            map[ch] += 1;
         }
-        int result = map[0];
-        int[] temp = new int[] { map[0], map['b' - 'a'], map['l' - 'a'] / 2, map['o' - 'a'] / 2, map['n' - 'a'] };
-        for (int item : temp) {
-            result = Math.min(result, item);
+        int result = map['a'];
+        char[] temp = new char[] { 'b', 'l', 'o', 'n' };
+        for (char item : temp) {
+            int value = 0;
+            if (item == 'l' || item == 'o') {
+                value = map[item] / 2;
+            } else {
+                value = map[item];
+            }
+            result = Math.min(value, result);
         }
         return result;
     }
