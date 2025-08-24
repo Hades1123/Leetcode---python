@@ -1,27 +1,33 @@
 import java.util.PriorityQueue;
 
 class MedianFinder {
-    private PriorityQueue<Integer> maxHeap;
-    private PriorityQueue<Integer> minHeap;
+    private PriorityQueue<Integer> leftHalf;
+    private PriorityQueue<Integer> rightHalf;
 
     public MedianFinder() {
-        maxHeap = new PriorityQueue<>((a, b) -> b - a);
-        minHeap = new PriorityQueue<>();
+        leftHalf = new PriorityQueue<>((a, b) -> b - a); // maxHeap
+        rightHalf = new PriorityQueue<>(); // minHeap (default)
     }
 
     public void addNum(int num) {
-        maxHeap.add(num);
-        minHeap.add(maxHeap.poll());
-        if (minHeap.size() - maxHeap.size() > 1) {
-            maxHeap.add(minHeap.poll());
+        if (leftHalf.isEmpty() || num < leftHalf.peek()) {
+            leftHalf.add(num);
+        } else {
+            rightHalf.add(num);
+        }
+
+        if (leftHalf.size() - rightHalf.size() > 1) {
+            rightHalf.add(leftHalf.poll());
+        } else if (rightHalf.size() - leftHalf.size() > 1) {
+            leftHalf.add(rightHalf.poll());
         }
     }
 
     public double findMedian() {
-        if (minHeap.size() == maxHeap.size()) {
-            return (minHeap.peek() + maxHeap.peek()) / 2.0;
+        if (leftHalf.size() == rightHalf.size()) {
+            return (leftHalf.peek() + rightHalf.peek()) / 2.0;
         }
-        return minHeap.peek();
+        return leftHalf.size() > rightHalf.size() ? leftHalf.peek() : rightHalf.peek();
     }
 }
 
